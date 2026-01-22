@@ -40,6 +40,9 @@ function createBtn() {
   const classes = Array.from(createPRBtn.classList).filter(c => !EXCLUDE_CLASSES.includes(c));
   copyMessagesPRButton.classList.add(...classes, 'mx-3');
 
+  // Explicitly set the button type to prevent it from defaulting to submit
+  copyMessagesPRButton.type = 'button';
+
   // Translate message according to user lang
   let i = 0;
   let text = '';
@@ -56,8 +59,6 @@ function createBtn() {
   // Add to parent as first element
   parent.parentNode.insertBefore(copyMessagesPRButton, parent);
 
-  copyMessagesPRButton.replaceWith(copyMessagesPRButton.cloneNode(true));
-
   // Add listener
   copyMessagesPRButton.addEventListener('click', () => {
     getPRMessages();
@@ -65,8 +66,7 @@ function createBtn() {
 }
 
 function getPRMessages() {
-  alert('Funciona');
-  return;
+  alert('Not Implemented!');
 }
 
 
