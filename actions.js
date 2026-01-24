@@ -12,7 +12,7 @@ const TRANSLATIONS = {
 
 const USER_LANG = [ document.documentElement.lang, navigator.language, 'es' ];
 const BODY_NODE = document.body;
-
+const BUTTON_ID = 'copy-pr-messages';
 
 // Listener
 const observer = new MutationObserver(() => {
@@ -28,6 +28,10 @@ function getLang(lang) {
 
 // Create button to add commit messages
 function createBtn() {
+  // Check if button already exists and return
+  if (document.getElementById(BUTTON_ID))
+    return;
+
   // Get PR button to match styles
   const createPRBtn = document?.querySelector('button.hx_create-pr-button');
   if (!createPRBtn) return;
@@ -39,6 +43,7 @@ function createBtn() {
   const copyMessagesPRButton = document.createElement('button');
   const classes = Array.from(createPRBtn.classList).filter(c => !EXCLUDE_CLASSES.includes(c));
   copyMessagesPRButton.classList.add(...classes, 'mx-3');
+  copyMessagesPRButton.id = BUTTON_ID;
 
   // Explicitly set the button type to prevent it from defaulting to submit
   copyMessagesPRButton.type = 'button';
