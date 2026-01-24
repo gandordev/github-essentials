@@ -5,9 +5,26 @@ const EXCLUDE_CLASSES = [
 ]
 
 const TRANSLATIONS = {
-  'es': 'Pegar mensajes commits',
+  'es': 'Pegar mensajes de commits',
   'en': 'Paste commit messages',
-  // etc
+  'fr': 'Coller les messages de commit',
+  'de': 'Commit-Nachrichten einfügen',
+  'it': 'Incolla i messaggi di commit',
+  'pt': 'Colar mensagens de commit',
+  'nl': 'Commitberichten plakken',
+  'pl': 'Wklej wiadomości commitów',
+  'ru': 'Вставить сообщения коммитов',
+  'ja': 'コミットメッセージを貼り付ける',
+  'zh': '粘贴提交消息',
+  'ko': '커밋 메시지 붙여넣기',
+  'ar': 'لصق رسائل الالتزام',
+  'tr': 'Commit mesajlarını yapıştır',
+  'sv': 'Klistra in commit-meddelanden',
+  'no': 'Lim inn commit-meldinger',
+  'da': 'Indsæt commit-beskeder',
+  'fi': 'Liitä commit-viestit',
+  'cs': 'Vložit zprávy o commitech',
+  'hu': 'Commit üzenetek beillesztése'
 };
 
 const USER_LANG = [ document.documentElement.lang, navigator.language, 'es' ];
@@ -29,8 +46,7 @@ function getLang(lang) {
 // Create button to add commit messages
 function createBtn() {
   // Check if button already exists and return
-  if (document.getElementById(BUTTON_ID))
-    return;
+  if (document.getElementById(BUTTON_ID)) return;
 
   // Get PR button to match styles
   const createPRBtn = document?.querySelector('button.hx_create-pr-button');
