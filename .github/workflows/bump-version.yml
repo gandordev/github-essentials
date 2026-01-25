@@ -39,7 +39,6 @@ jobs:
         id: bump
         uses: mmrakt/update-chrome-extension-version-action@v0.1.0
         with:
-          version_bump_type: ${{ github.event.inputs.bump || 'patch' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           manifest_file_path: manifest.json
 
