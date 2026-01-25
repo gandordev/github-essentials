@@ -1,15 +1,12 @@
 {
     "manifest_version": 3,
     "name": "GitHub Essentials",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "A lightweight extension to simplify developer actions on the GitHub platform.",
-
     "content_scripts": [
         {
-            "matches": [ "https://github.com/*/*/compare/*", "http://github.com/*/*/compare/*", "https://github.com/*/*/compare", "http://github.com/*/*/compare" ],
-            "js": [
-                "actions.js"
-            ]
+            "matches": [ "https://github.com/*", "http://github.com/*" ],
+            "js": [ "actions.js" ]
         }
     ]
 }
