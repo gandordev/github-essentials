@@ -1,0 +1,58 @@
+name: Bump Extension Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version type (patch/minor/major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+  pull_request:
+    types: [closed]
+    branches: [master]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  bump-version:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
+       github.event.pull_request.base.ref == 'master')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Update Version
+        id: bump
+        uses: mmrakt/update-chrome-extension-version-action@v0.1.0
+        with:
+          version_bump_type: ${{ github.event.inputs.bump || 'patch' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          manifest_file_path: manifest.json
+
+      - name: Create Tag
+        if: success()
+        run: |
+          git tag "v${{ steps.bump.outputs.new_version }}"
+          git push origin "v${{ steps.bump.outputs.new_version }}"
+
+      # - name: Create Release (optional)
+      #   uses: softprops/action-gh-release@v2
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: |
+      #       extension.zip
+      #       dist/*
