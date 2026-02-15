@@ -25,7 +25,6 @@ const EXCLUDE_CLASSES = [ 'BtnGroup-item', 'hx_create-pr-button', 'js-sync-selec
 const BUTTON_ID = 'copy-pr-messages';
 
 const PR_BODY = document?.getElementById('pull_request_body');
-const TIMELINE_BODY = document?.querySelector('div.TimelineItem-body');
 
 
 /**
@@ -51,7 +50,6 @@ function setupCopyPRButton() {
   const pullRequestBtn = document?.querySelector('button.hx_create-pr-button');
   if (!pullRequestBtn) return;
 
-  // Create our button
   createCopyPRMessagesBtn(pullRequestBtn)
 }
 
@@ -60,19 +58,20 @@ function setupCopyPRButton() {
  * @returns {string}
  */
 function getPRMessages() {
-  // If only one child or less are present, we don't have messages to copy
-  if (TIMELINE_BODY.childElementCount < 1 ) return;
+  let messages = "";
+  const timelineItemBody = document.getElementsByClassName('TimelineItem-body');
+  if (timelineItemBody.length === 0) return;
 
-  const ol = TIMELINE_BODY.getElementsByTagName('ol');
-  if (ol.length === 0) return;
+  for (let item of timelineItemBody) {
+    let ol = item.getElementsByTagName('ol');
+    if (ol.length === 0) continue;
 
-  try {
-    return [...ol[0].children]
-      .map(element => `- ${element.querySelector('a.Link--primary').textContent}`)
-      .join("\n");
-  } catch(e) {
-    return "";
+    for (let listItem of ol[0].children) {
+      messages += `- ${listItem.querySelector('a.Link--primary').textContent}\n`
+    }
   }
+
+  return messages;
 }
 
 /**
@@ -84,7 +83,7 @@ function addPRMessages(messages) {
   if (!PR_BODY) return;
 
   if (PR_BODY.value !== '') PR_BODY.value += "\n"
-  PR_BODY.value += messages;
+  PR_BODY.value += messages.trim();
 }
 
 /**
@@ -95,7 +94,6 @@ function addPRMessages(messages) {
 function createCopyPRMessagesBtn(elementToCopy) {
   const tagName = 'button';
 
-  // Create button
   const copyMessagesPRButton = document.createElement(tagName);
   try {
 
@@ -109,13 +107,11 @@ function createCopyPRMessagesBtn(elementToCopy) {
     // Explicitly set the button type to prevent it from defaulting to submit
     copyMessagesPRButton.type = tagName;
 
-    // Add listener
     copyMessagesPRButton.addEventListener('click', () => {
       let messages = getPRMessages();
       if (messages) addPRMessages(messages);
     });
 
-    // Translate message according to the current user lang
     copyMessagesPRButton.textContent = getTextTranslated();
 
     // Add to parent as first element
